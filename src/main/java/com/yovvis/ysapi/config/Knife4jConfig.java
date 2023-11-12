@@ -22,7 +22,7 @@ public class Knife4jConfig {
 
     @Bean
     public Docket defaultApi2() {
-        return new Docket(DocumentationType.SWAGGER_2)
+        return new Docket(DocumentationType.OAS_30)
                 .apiInfo(new ApiInfoBuilder()
                         .title("接口文档")
                         .description("ysapi-backend")
