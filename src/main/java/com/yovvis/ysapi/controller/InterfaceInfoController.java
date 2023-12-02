@@ -3,11 +3,9 @@ package com.yovvis.ysapi.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.google.gson.Gson;
+import com.yovvis.clientsdk.client.YsApiClient;
 import com.yovvis.ysapi.annotation.AuthCheck;
-import com.yovvis.ysapi.common.BaseResponse;
-import com.yovvis.ysapi.common.DeleteRequest;
-import com.yovvis.ysapi.common.ErrorCode;
-import com.yovvis.ysapi.common.ResultUtils;
+import com.yovvis.ysapi.common.*;
 import com.yovvis.ysapi.constant.CommonConstant;
 import com.yovvis.ysapi.constant.UserConstant;
 import com.yovvis.ysapi.exception.BusinessException;
@@ -31,7 +29,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * 帖子接口
+ * 接口
  */
 @RestController
 @RequestMapping("/interfaceInfo")
@@ -40,6 +38,9 @@ public class InterfaceInfoController {
 
     @Resource
     private InterfaceInfoService interfaceInfoService;
+
+    @Resource
+    private YsApiClient ysApiClient;
 
     @Resource
     private UserService userService;
@@ -56,7 +57,8 @@ public class InterfaceInfoController {
      * @return
      */
     @PostMapping("/add")
-    public BaseResponse<Long> addInterfaceInfo(@RequestBody InterfaceInfoAddRequest interfaceInfoAddRequest, HttpServletRequest request) {
+    public BaseResponse<Long> addInterfaceInfo(@RequestBody InterfaceInfoAddRequest interfaceInfoAddRequest,
+        HttpServletRequest request) {
         if (interfaceInfoAddRequest == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
@@ -79,7 +81,8 @@ public class InterfaceInfoController {
      * @return
      */
     @PostMapping("/delete")
-    public BaseResponse<Boolean> deleteInterfaceInfo(@RequestBody DeleteRequest deleteRequest, HttpServletRequest request) {
+    public BaseResponse<Boolean> deleteInterfaceInfo(@RequestBody DeleteRequest deleteRequest,
+        HttpServletRequest request) {
         if (deleteRequest == null || deleteRequest.getId() <= 0) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
@@ -104,7 +107,8 @@ public class InterfaceInfoController {
      */
     @PostMapping("/update")
     @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
-    public BaseResponse<Boolean> updateInterfaceInfo(@RequestBody InterfaceInfoUpdateRequest interfaceInfoUpdateRequest) {
+    public BaseResponse<Boolean>
+        updateInterfaceInfo(@RequestBody InterfaceInfoUpdateRequest interfaceInfoUpdateRequest) {
         if (interfaceInfoUpdateRequest == null || interfaceInfoUpdateRequest.getId() <= 0) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
@@ -128,8 +132,8 @@ public class InterfaceInfoController {
      * @return
      */
     @PostMapping("/list/page")
-    public BaseResponse<Page<InterfaceInfo>> listInterfaceInfoByPage(@RequestBody InterfaceInfoQueryRequest interfaceInfoQueryRequest,
-                                                                       HttpServletRequest request) {
+    public BaseResponse<Page<InterfaceInfo>> listInterfaceInfoByPage(
+        @RequestBody InterfaceInfoQueryRequest interfaceInfoQueryRequest, HttpServletRequest request) {
         if (interfaceInfoQueryRequest == null) {
             throw new BusinessException(ErrorCode.PARAMS_ERROR);
         }
@@ -147,10 +151,65 @@ public class InterfaceInfoController {
         QueryWrapper<InterfaceInfo> queryWrapper = new QueryWrapper<>(interfaceInfoQuery);
         queryWrapper.like(StringUtils.isNotBlank(description), "description", description);
         queryWrapper.orderBy(StringUtils.isNotBlank(sortField), sortOrder.equals(CommonConstant.SORT_ORDER_ASC),
-                sortField);
-        Page<InterfaceInfo> interfaceInfoPage = interfaceInfoService.page(new Page<>(current, size),
-                queryWrapper);
+            sortField);
+        Page<InterfaceInfo> interfaceInfoPage = interfaceInfoService.page(new Page<>(current, size), queryWrapper);
         return ResultUtils.success(interfaceInfoPage);
+    }
+
+    /**
+     * 发布（仅管理员）
+     *
+     * @param idRequest
+     * @return
+     */
+    @PostMapping("/online")
+    @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
+    public BaseResponse<Boolean> onlineInterfaceInfo(@RequestBody IdRequest idRequest, HttpServletRequest request) {
+//        if (idRequest == null || idRequest.getId() <= 0) {
+//            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+//        }
+//        // 判断是否存在
+//        InterfaceInfo oldInterfaceInfo = interfaceInfoService.getById(idRequest.getId());
+//        if (oldInterfaceInfo == null){
+//            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+//        }
+//        // todo 判断接口是否可以调用
+//        com.yovvis.clientsdk.model.User user = new com.yovvis.clientsdk.model.User();
+//        user.setName("test");
+//        String userName = ysApiClient.getUsernameByPost(user);
+//        if ()
+//        // 参数校验
+//        interfaceInfoService.validInterfaceInfo(interfaceInfo, false);
+//        long id = interfaceInfoUpdateRequest.getId();
+//        // 判断是否存在
+//        InterfaceInfo oldInterfaceInfo = interfaceInfoService.getById(id);
+//        ThrowUtils.throwIf(oldInterfaceInfo == null, ErrorCode.NOT_FOUND_ERROR);
+//        boolean result = interfaceInfoService.updateById(interfaceInfo);
+        return ResultUtils.success(null);
+    }
+
+    /**
+     * 下线（仅管理员）
+     *
+     * @param idRequest
+     * @return
+     */
+    @PostMapping("/offline")
+    @AuthCheck(mustRole = UserConstant.ADMIN_ROLE)
+    public BaseResponse<Boolean> offlineInterfaceInfo(@RequestBody IdRequest idRequest, HttpServletRequest request) {
+//        if (idRequest == null || idRequest.getId() <= 0) {
+//            throw new BusinessException(ErrorCode.PARAMS_ERROR);
+//        }
+//        InterfaceInfo interfaceInfo = new InterfaceInfo();
+//        BeanUtils.copyProperties(interfaceInfoUpdateRequest, interfaceInfo);
+//        // 参数校验
+//        interfaceInfoService.validInterfaceInfo(interfaceInfo, false);
+//        long id = interfaceInfoUpdateRequest.getId();
+//        // 判断是否存在
+//        InterfaceInfo oldInterfaceInfo = interfaceInfoService.getById(id);
+//        ThrowUtils.throwIf(oldInterfaceInfo == null, ErrorCode.NOT_FOUND_ERROR);
+//        boolean result = interfaceInfoService.updateById(interfaceInfo);
+        return ResultUtils.success(null);
     }
 
 }

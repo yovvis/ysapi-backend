@@ -1,0 +1,8 @@
+server:
+  port: 8088
+  servlet:
+    context-path: /api
+ysapi:
+  client:
+    secret-key: abcdefg
+    access-key: yovvis
