@@ -6,7 +6,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.yovvis.clientsdk.client.YsApiClient;
 import com.yovvis.clientsdk.model.User;
-import com.yovvis.config.client.UserClient;
 
 @SpringBootTest
 class YsapiInterfaceApplicationTests {
