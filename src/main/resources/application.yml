@@ -19,9 +19,9 @@ spring:
   # todo 需替换配置
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://118.89.72.243:3306/combat
-    username: yovvis
-    password: yovvis666
+    url: jdbc:mysql://localhost:3306/combat
+    username: root
+    password: root
   # Redis 配置
   # todo 需替换配置，然后取消注释
 #  redis:
@@ -89,7 +89,3 @@ cos:
     secretKey: xxx
     region: xxx
     bucket: xxx
-# jasypt
-jasypt:
-  encryptor:
-    password: yovvis
